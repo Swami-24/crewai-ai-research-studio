@@ -367,9 +367,9 @@ topic = st.text_input(
 # =========================================================
 with st.expander("⚙️ Advanced settings"):
     model_name = st.text_input(
-        "xAI Grok model",
-        value="grok-4.6",
-        help="Enter a model identifier supported by your xAI API account.",
+        "Gemini model",
+        value="gemini/gemini-2.5-flash",
+        help="Enter a Gemini model identifier supported by your API account.",
     )
 
 
@@ -393,12 +393,12 @@ if generate:
         st.stop()
 
     # Load API keys only when the user starts generation.
-    xai_key = get_secret("XAI_API_KEY")
+    gemini_key = get_secret("GEMINI_API_KEY")
     serper_key = get_secret("SERPER_API_KEY")
 
-    if not xai_key:
+    if not gemini_key:
         st.error(
-            "Missing XAI_API_KEY. Add it in "
+            "Missing GEMINI_API_KEY. Add it in "
             "Streamlit Cloud → Settings → Secrets."
         )
         st.stop()
@@ -411,10 +411,10 @@ if generate:
         st.stop()
 
     if not model_name.strip():
-        st.warning("Please enter a valid xAI Grok model name.")
+        st.warning("Please enter a valid Gemini model name.")
         st.stop()
 
-    os.environ["XAI_API_KEY"] = xai_key
+    os.environ["GEMINI_API_KEY"] = gemini_key
     os.environ["SERPER_API_KEY"] = serper_key
 
     try:
@@ -424,12 +424,11 @@ if generate:
         ):
 
             # -------------------------------------------------
-            # xAI GROK LANGUAGE MODEL
+            # GOOGLE GEMINI LANGUAGE MODEL
             # -------------------------------------------------
             llm = LLM(
                 model=model_name.strip(),
-                api_key=xai_key,
-                base_url="https://api.x.ai/v1",
+                api_key=gemini_key,
                 temperature=0.3,
             )
 
@@ -565,7 +564,7 @@ if generate:
         st.error("The workflow could not be completed.")
 
         st.warning(
-            "Check your xAI API key, Serper API key, model name, "
+            "Check your Gemini API key, Serper API key, model name, "
             "API quota, package versions, and Streamlit Cloud logs."
         )
 
@@ -645,7 +644,7 @@ st.markdown(
     """
 <div class="footer-text">
     <strong>AI Research Studio</strong><br>
-    Powered by CrewAI · xAI Grok · Serper<br>
+    Powered by CrewAI · Google Gemini · Serper<br>
     Research responsibly. Verify sources before publication.
 </div>
 """,

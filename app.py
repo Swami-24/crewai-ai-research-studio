@@ -387,8 +387,18 @@ if generate:
         st.warning("Please enter a research topic first.")
         st.stop()
 
-    gemini_key = get_secret("GEMINI_API_KEY")
-    serper_key = get_secret("SERPER_API_KEY")
+xai_key = get_secret("XAI_API_KEY")
+serper_key = get_secret("SERPER_API_KEY")
+
+if not xai_key or not serper_key:
+    st.error(
+        "Missing API keys. Please configure XAI_API_KEY "
+        "and SERPER_API_KEY in Streamlit Secrets."
+    )
+    st.stop()
+
+os.environ["XAI_API_KEY"] = xai_key
+os.environ["SERPER_API_KEY"] = serper_key
 
     if not gemini_key or not serper_key:
         st.error(
